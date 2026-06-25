@@ -1,4 +1,4 @@
-
+import MainGrid from "../components/MainGrid"
 export default function Men({products}) {
   return (
     <div>

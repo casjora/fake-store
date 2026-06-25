@@ -1,4 +1,4 @@
-
+import MainGrid from "../components/MainGrid"
 function Women({products}) {
   return (
     <div>
