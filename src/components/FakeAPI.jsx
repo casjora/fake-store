@@ -18,7 +18,6 @@ export default function FakeAPI() {
 
   return (
     <div>
-      {console.log(api)}
       <p>Estas son las propiedades del API:</p>
       <ul>
         {/* Aseguramos que 'api' exista Y que tenga al menos un producto adentro */}
@@ -29,7 +28,10 @@ export default function FakeAPI() {
       </ul>
       <p>Objeto Completo:</p>
       {api.map((articulo, i) => (
+        <div key={i}>
         <li key={i}>{articulo.title}</li>
+        <img src={articulo.image} alt="" />
+        </div>
       ))}
     </div>
   );
