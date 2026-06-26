@@ -3,11 +3,9 @@ import { useState,useEffect } from 'react'
 import {Routes, Route} from 'react-router-dom'
 
 /* Paginas de la OPA */
-import Electronics from './pages/Electronics'
 import Home from './pages/Home'
-import Jewerly from './pages/Jewerly'
-import Men from './pages/Men'
-import Women from './pages/Women'
+import CategoryPage from './pages/CategoryPage'
+import ProductDescription from './pages/ProductDescription'
 
 //Componentes necesarios en todas las paginas:
 import NavBar from './components/NavBar'
@@ -48,10 +46,10 @@ function App() {
       </div>
     )}
 
-    const filtroElectronics =products.filter(p=>p.category==="electronics")
+    /* const filtroElectronics =products.filter(p=>p.category==="electronics")
     const filtroJewerly =products.filter(p=>p.category==="jewelery")
     const filtroMen =products.filter(p=>p.category==="men's clothing")
-    const filtroWomen =products.filter(p=>p.category==="women's clothing")
+    const filtroWomen =products.filter(p=>p.category==="women's clothing") */
 
   
 
@@ -61,10 +59,8 @@ function App() {
       <Banner/>
       <Routes>
         <Route path='/' element={<Home products={products}/>} />
-        <Route path='/electronics' element={<Electronics products={filtroElectronics} />} />
-        <Route path='/jewerly' element={<Jewerly products={filtroJewerly} />} />
-        <Route path='/men' element={<Men products={filtroMen} />} />
-        <Route path='/women' element={<Women products={filtroWomen} />} />
+        <Route path='/category/:category' element={<CategoryPage products={products}/>} />
+        <Route path='/product/:id' element={<ProductDescription products={products}/>} />
       </Routes>
 
     </>

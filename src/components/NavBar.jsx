@@ -14,10 +14,10 @@ export default function NavBar() {
         </div>
 
         <nav className="md:flex gap-5 hidden">
-          <Link to={"/electronics"}>Electronics</Link>
-          <Link to={"/jewerly"}>Jewerly</Link>
-          <Link to={"men"}>Men's</Link>
-          <Link to={"women"}>Women's</Link>
+          <Link to={"/category/electronics"}>Electronics</Link>
+          <Link to={"/category/jewelery"}>Jewelry</Link>
+          <Link to={"/category/men"}>Men's</Link>
+          <Link to={"/category/women"}>Women's</Link>
         </nav>
       </div>
 
