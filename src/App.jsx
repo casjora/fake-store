@@ -1,71 +1,63 @@
-/* Estados y routing */
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
+import { useFetchProducts } from "./hooks/useFetchProducts";
 
-/* Paginas de la OPA */
-import Home from "./pages/Home";
-import CategoryPage from "./pages/CategoryPage";
-import ProductDescription from "./pages/ProductDescription";
-
-// Componentes necesarios en todas las paginas:
-import NavBar from "./components/NavBar";
 import Banner from "./components/Banner";
 import Footer from "./components/Footer";
+import CategoryFilter from "./components/CategoryFilter";
+import NavBar from "./components/NavBar"; // O SearchBar según tu archivo
 
-import "./App.css";
+import Home from "./pages/Home";
+import ProductPage from "./pages/ProductPage";
+import NotFound from "./pages/NotFound";
 
 function App() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const { products, loading, error, refetch } = useFetchProducts();
 
-  useEffect(() => {
-    async function db() {
-      try {
-        let response = await fetch("https://fakestoreapi.com/products");
-        let data = await response.json();
-        setProducts(data);
-      } catch (error) {
-        console.error("Error cargando el API de Fake Store, ", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    db();
-  }, []);
-
+  // 🌀 Pantalla de carga oficial de la rúbrica
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen bg-slate-50">
-        <p className="text-xl font-medium text-gray-500 animate-pulse">Cargando información...</p>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 gap-3">
+        <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-xs font-bold text-gray-500 uppercase tracking-widest animate-pulse">Cargando Tienda...</p>
+      </div>
+    );
+  }
+
+  // ⚠️ Pantalla de error amigable con reintento
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4 text-center">
+        <span className="text-4xl mb-2">⚠️</span>
+        <p className="text-red-500 font-bold mb-4">Error de conexión: {error}</p>
+        <button 
+          onClick={refetch} 
+          className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2.5 rounded-xl text-sm transition-colors cursor-pointer"
+        >
+          Reintentar conexión
+        </button>
       </div>
     );
   }
 
   return (
-    <>
-      {/* 🔌 Conectamos los cables aquí pasándole el estado a la NavBar */}
-      <NavBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <Banner />
-      
-      <Routes>
-        <Route
-          path="/"
-          element={<Home products={products} searchTerm={searchTerm} />}
-        />
-        {/* Dejamos una sola ruta limpia con todas sus propiedades */}
-        <Route
-          path="/category/:category"
-          element={<CategoryPage products={products} searchTerm={searchTerm} />}
-        />
-        <Route
-          path="/product/:id"
-          element={<ProductDescription products={products} />}
-        />
-      </Routes>
-      
+    <div className="bg-white min-h-screen flex flex-col justify-between">
+      <div>
+        {/* Sincronizamos el buscador global */}
+        <NavBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        <Banner />
+        <CategoryFilter />
+
+        <Routes>
+          <Route path="/" element={<Home products={products} searchTerm={searchTerm} />} />
+          <Route path="/category/:category" element={<Home products={products} searchTerm={searchTerm} />} />
+          <Route path="/product/:id" element={<ProductPage products={products} />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
       <Footer />
-    </>
+    </div>
   );
 }
 

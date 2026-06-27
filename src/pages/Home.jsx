@@ -1,32 +1,65 @@
-import MainGrid from "../components/MainGrid";
+import { useParams } from "react-router-dom";
+import ProductCard from "../components/ProductCard";
 
-// Recibimos la prop 'searchTerm' de App.jsx
 export default function Home({ products = [], searchTerm = "" }) {
-  
-  // Filtramos la lista completa de la tienda según lo escrito en la barra de búsqueda
+  const { category } = useParams();
+
+  // 🔍 Filtro ultra-seguro contra nulos y diferencias de escritura de la API
   const filteredProducts = products.filter((product) => {
-    const title = (product?.title || "").toLowerCase();
-    return title.includes(searchTerm.toLowerCase());
+    const matchesSearch = product.title?.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    // Si estamos en la Home general, solo dependemos del buscador
+    if (!category) return matchesSearch;
+
+    const productCat = product.category?.toLowerCase() || "";
+    const routeCat = category.toLowerCase();
+    
+    // Cruza de forma segura "jewelery", "electronics", "men's clothing" y "women's clothing"
+    const matchesCategory = productCat.includes(routeCat);
+    
+    return matchesSearch && matchesCategory;
   });
 
+  // Generamos títulos dinámicos elegantes basados en tu diseño
+  const getTitles = () => {
+    if (!category) return { main: "Trending Now", sub: "Our most popular items this week" };
+    
+    // Capitaliza el nombre de la categoría para el título de la izquierda
+    const formattedCat = category.charAt(0).toUpperCase() + category.slice(1);
+    return {
+      main: `${formattedCat} Collection`,
+      sub: `Discover our ${formattedCat} items`
+    };
+  };
+
+  const titles = getTitles();
+
   return (
-    <div>
-      <div className="flex w-full justify-between px-5 mt-8">
-        <div className="text-left">
-          <h2 className="text-xl md:text-2xl font-black text-gray-900 tracking-tight">Trending Now</h2>
-          <p className="text-xs text-gray-400 mt-1 hidden sm:block">Our most popular items this week</p>
-        </div>
+    <main className="max-w-7xl mx-auto px-4 py-8 min-h-screen">
+      {/* 🏷️ Encabezado dinámico doble (Izquierda y Derecha) */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b border-gray-100 pb-4 mb-6 gap-2">
+        <h2 className="text-xl font-black text-gray-900 uppercase tracking-tight">
+          {titles.main}
+        </h2>
+        <p className="text-xs font-medium text-gray-400">
+          {titles.sub}
+        </p>
       </div>
-      
-      {/* Si hay resultados los muestra, si no, te avisa amigablemente */}
-      {filteredProducts.length > 0 ? (
-        <MainGrid data={filteredProducts} />
+
+      {/* 📦 Renderizado condicional */}
+      {filteredProducts.length === 0 ? (
+        <div className="text-center py-20 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+          <span className="text-3xl block mb-2">🔍</span>
+          <p className="text-gray-500 font-bold text-sm">No products found</p>
+          <p className="text-xs text-gray-400 mt-1">Try adjusting your keywords or category filters.</p>
+        </div>
       ) : (
-        <div className="text-center py-16 text-gray-400">
-          <p className="text-lg font-medium">No products matched your search.</p>
-          <p className="text-sm mt-1">Try searching for something else!</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {filteredProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
         </div>
       )}
-    </div>
+    </main>
   );
 }
