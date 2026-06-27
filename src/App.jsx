@@ -10,7 +10,7 @@ import ProductDescription from './pages/ProductDescription'
 //Componentes necesarios en todas las paginas:
 import NavBar from './components/NavBar'
 import Banner from './components/Banner'
-
+import Footer from './components/Footer'
 
 
 
@@ -62,7 +62,7 @@ function App() {
         <Route path='/category/:category' element={<CategoryPage products={products}/>} />
         <Route path='/product/:id' element={<ProductDescription products={products}/>} />
       </Routes>
-
+      <Footer/>
     </>
   )
 }
