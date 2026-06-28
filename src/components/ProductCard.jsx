@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext"; // 👈 Importamos el hook del carrito
 
 export default function ProductCard({ product }) {
+  const { addToCart } = useCart(); // 👈 Extraemos la función de agregar
+
   return (
     <div className="bg-white border border-gray-100 rounded-2xl p-4 flex flex-col justify-between shadow-xs transition-all [@media(hover:hover)]:hover:shadow-md">
       <Link to={`/product/${product.id}`} className="group cursor-pointer">
@@ -24,7 +27,12 @@ export default function ProductCard({ product }) {
           <span className="text-base font-black text-gray-900">${product.price.toFixed(2)}</span>
           <span className="text-xs text-amber-500 font-bold">⭐ {product.rating?.rate || 4.5}</span>
         </div>
-        <button className="w-full bg-[#0f172a] [@media(hover:hover)]:hover:bg-slate-800 active:bg-slate-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-2">
+        
+        {/* 🔥 Añadimos el onClick para activar la acción */}
+        <button 
+          onClick={() => addToCart(product)}
+          className="w-full bg-[#0f172a] [@media(hover:hover)]:hover:bg-slate-800 active:bg-slate-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-2"
+        >
           🛍️ Add to Cart
         </button>
       </div>

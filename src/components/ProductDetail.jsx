@@ -1,7 +1,10 @@
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext";
+
 
 export default function ProductDetail({ product }) {
   const navigate = useNavigate();
+  const { addToCart } = useCart();
 
   return (
     <div className="max-w-5xl mx-auto bg-white rounded-3xl border border-gray-100 p-6 md:p-10 shadow-xs">
@@ -22,7 +25,7 @@ export default function ProductDetail({ product }) {
           <p className="text-sm text-gray-500 leading-relaxed mb-6">{product.description}</p>
           <div className="flex items-center justify-between border-t border-gray-100 pt-6">
             <span className="text-3xl font-black text-gray-900">${product.price?.toFixed(2)}</span>
-            <button className="bg-blue-600 [@media(hover:hover)]:hover:bg-blue-700 active:bg-blue-800 text-white font-bold px-8 py-3.5 rounded-xl transition-colors shadow-md shadow-blue-600/10 cursor-pointer">
+            <button onClick={() => addToCart(product)} className="bg-blue-600 [@media(hover:hover)]:hover:bg-blue-700 active:bg-blue-800 text-white font-bold px-8 py-3.5 rounded-xl transition-colors shadow-md shadow-blue-600/10 cursor-pointer">
               Add to Bag
             </button>
           </div>
