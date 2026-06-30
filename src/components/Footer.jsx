@@ -69,7 +69,7 @@ export default function Footer() {
 
       {/* LÍNEA DIVISORIA */}
       <div className="max-w-7xl mx-auto px-6 mt-12 pt-6 border-t border-gray-200/60 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-gray-400">
-        <p>© 2026 Luxe Store. Powered by FakeStore API.</p>
+
         <div className="flex gap-4">
           <a href="#" className="hover:underline">Terms of Service</a>
           <a href="#" className="hover:underline">Privacy Policy</a>

@@ -4,7 +4,7 @@ import ProductCard from "../components/ProductCard";
 export default function Home({ products = [], searchTerm = "" }) {
   const { category } = useParams();
 
-  // 🔍 Filtro ultra-seguro contra nulos y diferencias de escritura de la API
+  // Filtro ultra-seguro contra nulos y diferencias de escritura de la API
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.title?.toLowerCase().includes(searchTerm.toLowerCase());
     
@@ -20,7 +20,7 @@ export default function Home({ products = [], searchTerm = "" }) {
     return matchesSearch && matchesCategory;
   });
 
-  // Generamos títulos dinámicos elegantes basados en tu diseño
+  // Generamos títulos dinámicos elegantes basados en el diseño
   const getTitles = () => {
     if (!category) return { main: "Trending Now", sub: "Our most popular items this week" };
     

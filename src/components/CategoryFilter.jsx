@@ -12,7 +12,7 @@ export default function CategoryFilter() {
   ];
 
   return (
-    <div className="w-full bg-white border-b border-gray-100 sticky top-0 z-20">
+    <div className="md:hidden block w-full bg-white border-b border-gray-100 sticky top-0 z-20">
       <div className="max-w-7xl mx-auto px-4 flex gap-2.5 py-3 overflow-x-auto scrollbar-none justify-start md:justify-center">
         {categories.map((cat) => {
           const isActive = (!activeCategory && cat.slug === "") || activeCategory === cat.slug;
